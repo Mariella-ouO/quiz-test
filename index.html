@@ -56,7 +56,7 @@ input[type="radio"]{
   margin-right:10px;
 }
 
-input[type="text"], textarea{
+textarea{
   width:100%;
   padding:12px;
   border-radius:8px;
@@ -149,20 +149,26 @@ const result = document.getElementById('result');
 
 form.addEventListener('submit', function(e) {
     e.preventDefault(); // 阻止默认跳转
+    e.stopPropagation(); // 防止冒泡
+
     const data = new FormData(form);
-    
+
     fetch('https://formspree.io/f/mzdjrqwe', {
         method: 'POST',
         body: data,
         headers: {
             'Accept': 'application/json'
         }
-    }).then(response => {
-        // 不管返回什么，显示自定义提示
-        result.style.display = 'block';
-        // 可选择清空表单
-        form.reset();
-    }).catch(error => {
+    })
+    .then(response => {
+        if (response.ok) {
+            result.style.display = 'block';  // 显示提示
+            form.style.display = 'none';     // 隐藏表单
+        } else {
+            alert('提交失败，请稍后再试。');
+        }
+    })
+    .catch(error => {
         alert('提交失败，请检查网络。');
     });
 });
