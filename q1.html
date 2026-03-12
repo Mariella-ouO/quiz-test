@@ -29,9 +29,9 @@ input[type="radio"]:checked + span{background:#d6e0ff;border-color:#4f6df5;}
 </div>
 
 <script>
-const form = document.getElementById('q1Form');
-form.addEventListener('change', function(e){
-    const selected = form.q1.value;
+const form1 = document.getElementById('q1Form');
+form1.addEventListener('change', function(){
+    const selected = form1.q1.value;
     if(selected){
         localStorage.setItem('q1', selected);
         window.location.href = 'q2.html';
