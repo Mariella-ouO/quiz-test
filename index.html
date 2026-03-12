@@ -89,7 +89,7 @@ button:hover{
   font-size:18px;
   font-weight:600;
   color:#333;
-  display:none; /* 默认隐藏 */
+  display:none !important; /* 强制初始隐藏 */
 }
 
 /* 高亮选中的选项 */
@@ -143,33 +143,34 @@ input[type="radio"]:checked + span{
 </div>
 
 <script>
-// 异步提交表单到 Formspree
-const form = document.getElementById('quiz');
+// 确保初始隐藏 result
 const result = document.getElementById('result');
+result.style.display = 'none';
 
-form.addEventListener('submit', function(e) {
-    e.preventDefault(); // 阻止默认跳转
-    e.stopPropagation(); // 防止冒泡
+const form = document.getElementById('quiz');
+
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+    e.stopPropagation(); // 防止手机浏览器默认行为
 
     const data = new FormData(form);
 
     fetch('https://formspree.io/f/mzdjrqwe', {
-        method: 'POST',
-        body: data,
-        headers: {
-            'Accept': 'application/json'
-        }
+        method:'POST',
+        body:data,
+        headers:{'Accept':'application/json'}
     })
-    .then(response => {
-        if (response.ok) {
-            result.style.display = 'block';  // 显示提示
-            form.style.display = 'none';     // 隐藏表单
-        } else {
+    .then(resp=>{
+        if(resp.ok){
+            result.style.display='block';  // 显示自定义提示
+            form.style.display='none';     // 隐藏表单
+            window.scrollTo({top:0, behavior:'smooth'}); // 自动滚动到顶部
+        }else{
             alert('提交失败，请稍后再试。');
         }
     })
-    .catch(error => {
-        alert('提交失败，请检查网络。');
+    .catch(err=>{
+        alert('提交失败，请检查网络');
     });
 });
 </script>
