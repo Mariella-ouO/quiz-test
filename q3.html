@@ -23,13 +23,12 @@ button:hover{background:#3e57d8;}
 </div>
 
 <script>
-const form = document.getElementById('q3Form');
-form.addEventListener('submit', async function(e){
+const form3 = document.getElementById('q3Form');
+form3.addEventListener('submit', async function(e){
     e.preventDefault();
-    const q3 = form.q3.value.trim();
+    const q3 = form3.q3.value.trim();
     if(!q3){alert('请填写内容'); return;}
 
-    // 获取前两个答案
     const q1 = localStorage.getItem('q1') || '';
     const q2 = localStorage.getItem('q2') || '';
 
