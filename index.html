@@ -84,12 +84,12 @@ button:hover{
 }
 
 #result{
+  display:none; /* 初始隐藏 */
   margin-top:20px;
   text-align:center;
   font-size:18px;
   font-weight:600;
   color:#333;
-  display:none !important; /* 强制初始隐藏 */
 }
 
 /* 高亮选中的选项 */
@@ -138,39 +138,37 @@ input[type="radio"]:checked + span{
 
 </form>
 
+<!-- 提交成功提示，放在 form 外部 -->
 <div id="result">提交成功！小全得到了巧克力，什么都没有留下。但你可以截屏这个页面到她的朋友圈底下互动</div>
 
 </div>
 
 <script>
-// 确保初始隐藏 result
-const result = document.getElementById('result');
-result.style.display = 'none';
-
+// 获取 DOM 元素
 const form = document.getElementById('quiz');
+const result = document.getElementById('result');
 
+// 页面初始化隐藏提示
+result.style.display='none';
+
+// 异步提交表单
 form.addEventListener('submit', function(e){
     e.preventDefault();
-    e.stopPropagation(); // 防止手机浏览器默认行为
+    e.stopPropagation();
 
+    // 提交立即显示提示，隐藏表单
+    result.style.display='block';
+    form.style.display='none';
+    window.scrollTo({top:0, behavior:'smooth'});
+
+    // 异步发送表单数据到 Formspree
     const data = new FormData(form);
-
     fetch('https://formspree.io/f/mzdjrqwe', {
         method:'POST',
         body:data,
         headers:{'Accept':'application/json'}
-    })
-    .then(resp=>{
-        if(resp.ok){
-            result.style.display='block';  // 显示自定义提示
-            form.style.display='none';     // 隐藏表单
-            window.scrollTo({top:0, behavior:'smooth'}); // 自动滚动到顶部
-        }else{
-            alert('提交失败，请稍后再试。');
-        }
-    })
-    .catch(err=>{
-        alert('提交失败，请检查网络');
+    }).catch(err=>{
+        console.log('提交失败', err);
     });
 });
 </script>
