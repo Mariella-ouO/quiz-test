@@ -85,17 +85,25 @@ button:hover{
 
 #result{
   display:none; /* 初始隐藏 */
+  opacity:0;
   margin-top:20px;
   text-align:center;
   font-size:18px;
   font-weight:600;
   color:#333;
+  transition: opacity 0.5s ease-in-out;
 }
 
 /* 高亮选中的选项 */
 input[type="radio"]:checked + span{
   background:#d6e0ff;
   border-color:#4f6df5;
+}
+
+/* 表单禁用效果 */
+form.disabled{
+  opacity:0.4;
+  pointer-events:none;
 }
 </style>
 </head>
@@ -144,22 +152,25 @@ input[type="radio"]:checked + span{
 </div>
 
 <script>
-// 获取 DOM 元素
 const form = document.getElementById('quiz');
 const result = document.getElementById('result');
 
 // 页面初始化隐藏提示
-result.style.display = 'none';
+result.style.display='none';
+result.style.opacity = 0;
 
-// 点击提交事件，只做前端模拟
 form.addEventListener('submit', function(e){
     e.preventDefault();
     e.stopPropagation();
 
-    // 显示提示并隐藏表单
+    // 禁用表单
+    form.classList.add('disabled');
+
+    // 显示提示（淡入效果），兼容微信
     result.style.display = 'block';
-    form.style.display = 'none';
-    window.scrollTo({top:0, behavior:'smooth'});
+    requestAnimationFrame(()=>{
+        result.style.opacity = 1;
+    });
 });
 </script>
 
