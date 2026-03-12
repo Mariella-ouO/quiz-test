@@ -83,17 +83,6 @@ button:hover{
   background:#3e57d8;
 }
 
-#result{
-  display:none; /* 初始隐藏 */
-  opacity:0;
-  margin-top:20px;
-  text-align:center;
-  font-size:18px;
-  font-weight:600;
-  color:#333;
-  transition: opacity 0.5s ease-in-out;
-}
-
 /* 高亮选中的选项 */
 input[type="radio"]:checked + span{
   background:#d6e0ff;
@@ -145,19 +134,10 @@ form.disabled{
 <button type="submit">提交</button>
 
 </form>
-
-<!-- 提交成功提示 -->
-<div id="result">提交成功！小全得到了巧克力，什么都没有留下。但你可以截屏这个页面到她的朋友圈底下互动</div>
-
 </div>
 
 <script>
 const form = document.getElementById('quiz');
-const result = document.getElementById('result');
-
-// 页面初始化隐藏提示
-result.style.display='none';
-result.style.opacity = 0;
 
 form.addEventListener('submit', function(e){
     e.preventDefault();
@@ -166,11 +146,8 @@ form.addEventListener('submit', function(e){
     // 禁用表单
     form.classList.add('disabled');
 
-    // 显示提示（淡入效果），兼容微信
-    result.style.display = 'block';
-    requestAnimationFrame(()=>{
-        result.style.opacity = 1;
-    });
+    // 跳转到新的成功页面
+    window.location.href = 'success.html';
 });
 </script>
 
